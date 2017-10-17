@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>se.urmo</groupId>
+        <artifactId>containers</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>se.urmo</groupId>
+    <artifactId>elastic</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <docker.env.JAVA_OPTS>-Xmx32m</docker.env.JAVA_OPTS>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>rta/elasticsearch</name>
+                            <alias>elasticsearch</alias>
+                            <build>
+                                <tags>
+                                    <tag>latest</tag>
+                                </tags>
+                                <dockerFileDir>.</dockerFileDir>
+                            </build>
+                            <run>
+                                <namingStrategy>alias</namingStrategy>
+                                <hostname>elasticsearch</hostname>
+                                <env>
+                                    <cluster.name>docker-cluster</cluster.name>
+                                    <bootstrap.memory_lock>true</bootstrap.memory_lock>
+                                    <ES_JAVA_OPTS>-Xms512m -Xmx512m</ES_JAVA_OPTS>
+                                    <xpack.security.enabled>false</xpack.security.enabled>
+                                </env>
+                                <ports>
+                                    <port>9200:9200</port>
+                                </ports>
+                                <ulimits>
+                                    <ulimit>
+                                        <name>memlock</name>
+                                        <hard>-1</hard>
+                                        <soft>-1</soft>
+                                    </ulimit>
+                                </ulimits>
+                                <volumes>
+                                    <bind>
+                                        <volume>esdata1:/usr/share/elasticsearch/data</volume>
+                                    </bind>
+                                </volumes>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

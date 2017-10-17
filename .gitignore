@@ -1,0 +1,29 @@
+*.class
+*.log
+
+# sbt specific
+.cache/
+.history/
+.lib/
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+project/build.sbt
+.vagrant
+
+# Scala-IDE specific
+.scala_dependencies
+.worksheet
+.idea
+*.iml
+.history
+.Rproj.user
+*.old*
+/dcp_csv_repeater/nbproject/private/
+/dcp_jms_listener/nbproject/private/
+/dcp_sample_analysis/nbproject/private/
+/dcp_jms_listener/build/
+/rta/rta-data-processing/routing/xdr/data/
