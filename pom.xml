@@ -13,6 +13,9 @@
         <module>mqttelasticconnector</module>
         <module>containers</module>
     </modules>
+    <properties>
+        <target.version>1.8</target.version>
+    </properties>
 
     <build>
         <plugins>
@@ -36,8 +39,8 @@
                 <version>3.3</version>
                 <inherited>true</inherited>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>${target.version}</source>
+                    <target>${target.version}</target>
                 </configuration>
             </plugin>
             <!-- Maven Assembly Plugin -->

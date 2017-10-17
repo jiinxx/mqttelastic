@@ -46,10 +46,6 @@ public class MqttPublishSample {
             sampleClient.disconnect();
             System.out.println("Disconnected");
 
-            Node node = odeBuilder()
-                    .clusterName("elasticsearch").client(true).node();
-            Client client = node.client();
-
             System.exit(0);
         } catch(MqttException me) {
             System.out.println("reason "+me.getReasonCode());

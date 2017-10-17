@@ -31,10 +31,18 @@
             <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
             <version>${mqtt.client.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.elasticsearch.client/rest -->
         <dependency>
-            <groupId>org.elasticsearch</groupId>
-            <artifactId>elasticsearch</artifactId>
-            <version>5.6.3</version>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>rest</artifactId>
+            <version>5.5.3</version>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>
