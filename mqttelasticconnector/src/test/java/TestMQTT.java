@@ -2,7 +2,6 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.junit.Test;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 import static org.apache.commons.codec.CharEncoding.UTF_8;
@@ -62,8 +61,9 @@ public class TestMQTT {
             }
         });
 
-        client.connect();
+        MqttConnectOptions options = new MqttConnectOptions();
+        options.setKeepAliveInterval(10);
+        client.connect(options);
         client.subscribe("#", 1);
-        Thread.sleep(5000);
     }
 }
