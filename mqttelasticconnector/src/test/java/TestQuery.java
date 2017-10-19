@@ -1,10 +1,14 @@
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.nio.entity.NStringEntity;
 import org.apache.http.util.EntityUtils;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +46,19 @@ public class TestQuery {
             System.out.println(EntityUtils.toString(response.getEntity()));
             System.out.println("Host -" + response.getHost());
             System.out.println("RequestLine -" + response.getRequestLine());
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void test2(){
+        try {
+            RestClient sinkClient = RestClient.builder(
+                    new HttpHost("localhost", 9200, "http")).build();
+            HttpEntity entity = new NStringEntity("{\"type\":\"location\",\"tid\":\"nx\",\"acc\":16,\"batt\":61,\"conn\":\"m\",\"lat\":59.4313733,\"lon\":18.3259013,\"tst\":1508256136}", ContentType.APPLICATION_JSON);
+            Response response = sinkClient.performRequest("PUT", "owntracks/urban", Collections.emptyMap(), entity);
+            System.out.println(EntityUtils.toString(response.getEntity()));
         }catch (IOException e){
             e.printStackTrace();
         }

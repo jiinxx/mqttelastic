@@ -28,49 +28,61 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class MqttGenerator {
     private static final Logger log = LogManager.getLogger(MqttGenerator.class);
+    private static final String broker = "tcp://localhost:1883";
+    private static final String clientId = "MqttGen";
+    private static MqttPublisher mqttPublisher;
 
-    public static void main(String[] args) throws MqttException, InterruptedException {
-        new MqttGenerator().start();
+    public static void main(String[] args) {
+        try {
+            MqttGenerator.createMqttGenerator().start();
+        } catch (MqttException e) {
+            log.error("Failed to create generator", e);
+        }
     }
 
-    private void start() throws MqttException {
-        String broker = "tcp://localhost:1883";
-        String clientId = "MqttGen";
-        MemoryPersistence persistence = new MemoryPersistence();
+    public static MqttGenerator createMqttGenerator() throws MqttException {
+        return new MqttGenerator() {
+            MqttGenerator create() throws MqttException {
+                MemoryPersistence persistence = new MemoryPersistence();
 
-        MqttClient client = new MqttClient(broker, clientId, persistence);
-        MqttConnectOptions connOpts = new MqttConnectOptions();
-        connOpts.setCleanSession(true);
-        log.debug("Connecting to broker: " + broker);
-        client.connect(connOpts);
-        log.debug("Connected");
+                MqttClient client = new MqttClient(broker, clientId, persistence);
 
-        MqttPublisher mqttPublisher = new MqttPublisher(client).startThread();
-
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            log.debug("[MqttPublisher thread] Shutting down");
-            mqttPublisher.stopThread();
-            log.debug("[MqttPublisher thread] MqttPublisher complete");
-            try {
-                client.disconnect();
-            } catch (MqttException e) {
-                e.printStackTrace();
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                    log.info("Shutting down");
+                    mqttPublisher.stopThread();
+                    log.info("MqttPublisher complete");
+                    try {
+                        client.disconnect();
+                    } catch (MqttException e) {
+                        e.printStackTrace();
+                    }
+                }));
+                log.info("ShutdownHook added");
+                mqttPublisher = new MqttPublisher(client);
+                return this;
             }
-        }));
-        log.debug("[Main thread] MqttPublisher hook added");
+        }.create();
+    }
+
+    private void start() {
+        mqttPublisher.startThread();
     }
 
     private class MqttPublisher {
+        private final MqttConnectOptions connOpts;
         /*
-message: {"_type":"location","tid":"nx","acc":16,"batt":61,"conn":"m","lat":59.4313733,"lon":18.3259013,"tst":1508256136}
-topic: owntracks/urban/nexus
-message: {"_type":"location","tid":"nx","acc":22,"batt":50,"conn":"w","lat":59.434008,"lon":18.3240279,"t":"u","tst":1508266487}
-topic: owntracks/urban/nexus
-message: {"_type":"location","tid":"nx","acc":22,"batt":50,"conn":"w","lat":59.4339265,"lon":18.3240272,"tst":1508266496}
-*/
-        private List<String> list = Arrays.asList("{\"_type\":\"location\",\"tid\":\"nx\",\"acc\":16,\"batt\":61,\"conn\":\"m\",\"lat\":59.4313733,\"lon\":18.3259013,\"tst\":1508256136}",
+        message: {"_type":"location","tid":"nx","acc":16,"batt":61,"conn":"m","lat":59.4313733,"lon":18.3259013,"tst":1508256136}
+        topic: owntracks/urban/nexus
+        message: {"_type":"location","tid":"nx","acc":22,"batt":50,"conn":"w","lat":59.434008,"lon":18.3240279,"t":"u","tst":1508266487}
+        topic: owntracks/urban/nexus
+        message: {"_type":"location","tid":"nx","acc":22,"batt":50,"conn":"w","lat":59.4339265,"lon":18.3240272,"tst":1508266496}
+        */
+        private List<String> list = Arrays.asList(
+                "{\"_type\":\"location\",\"tid\":\"nx\",\"acc\":16,\"batt\":61,\"conn\":\"m\",\"lat\":59.4313733,\"lon\":18.3259013,\"tst\":1508256136}",
                 "{\"_type\":\"location\",\"tid\":\"nx\",\"acc\":22,\"batt\":50,\"conn\":\"w\",\"lat\":59.434008,\"lon\":18.3240279,\"t\":\"u\",\"tst\":1508266487}",
-                "{\"_type\":\"location\",\"tid\":\"nx\",\"acc\":22,\"batt\":50,\"conn\":\"w\",\"lat\":59.4339265,\"lon\":18.3240272,\"tst\":1508266496}");
+                "{\"_type\":\"location\",\"tid\":\"nx\",\"acc\":22,\"batt\":50,\"conn\":\"w\",\"lat\":59.4339265,\"lon\":18.3240272,\"tst\":1508266496}"
+        );
+
         private final MqttClient client;
 
         private Thread thread = null;
@@ -79,16 +91,22 @@ message: {"_type":"location","tid":"nx","acc":22,"batt":50,"conn":"w","lat":59.4
 
         private MqttPublisher(MqttClient client) {
             this.client = client;
+            connOpts = new MqttConnectOptions();
+            connOpts.setCleanSession(true);
         }
 
         void stopThread() {
-
+            thread.interrupt();
         }
 
         MqttPublisher startThread() {
             thread = new Thread(() -> {
-                while (true) {
-                    try {
+                try {
+                    log.debug("Connecting to broker: " + broker);
+                    client.connect(connOpts);
+                    log.info("Connected");
+                    while (true) {
+
                         int i = ThreadLocalRandom.current().nextInt(0, 3);
                         String content = list.get(i);
                         log.debug("Publishing message: " + content);
@@ -97,12 +115,12 @@ message: {"_type":"location","tid":"nx","acc":22,"batt":50,"conn":"w","lat":59.4
                         client.publish(topic, message);
                         log.debug("Message published");
                         Thread.sleep(6000);
-                    } catch (InterruptedException | MqttException e) {
-                        e.printStackTrace();
-                        break;
                     }
+                } catch (InterruptedException ignored) {
+                    log.warn("Thread interrupted");
+                } catch (MqttException e){
+                    log.error("Publish failed", e);
                 }
-                log.debug("[Sample thread] Stopped");
             });
             thread.start();
             return this;
