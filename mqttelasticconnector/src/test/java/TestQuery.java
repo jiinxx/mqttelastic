@@ -57,7 +57,7 @@ public class TestQuery {
             RestClient sinkClient = RestClient.builder(
                     new HttpHost("localhost", 9200, "http")).build();
             HttpEntity entity = new NStringEntity("{\"type\":\"location\",\"tid\":\"nx\",\"acc\":16,\"batt\":61,\"conn\":\"m\",\"lat\":59.4313733,\"lon\":18.3259013,\"tst\":1508256136}", ContentType.APPLICATION_JSON);
-            Response response = sinkClient.performRequest("PUT", "owntracks/urban", Collections.emptyMap(), entity);
+            Response response = sinkClient.performRequest("PUT", "owntracks", Collections.emptyMap(), entity);
             System.out.println(EntityUtils.toString(response.getEntity()));
         }catch (IOException e){
             e.printStackTrace();

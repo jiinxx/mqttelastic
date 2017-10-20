@@ -77,9 +77,8 @@ public class MqttGenerator {
         topic: owntracks/urban/nexus
         message: {"_type":"location","tid":"nx","acc":22,"batt":50,"conn":"w","lat":59.4339265,"lon":18.3240272,"tst":1508266496}
         */
-        private List<String> list = Arrays.asList(
+        public List<String> list = Arrays.asList(
                 "{\"_type\":\"location\",\"tid\":\"nx\",\"acc\":16,\"batt\":61,\"conn\":\"m\",\"lat\":59.4313733,\"lon\":18.3259013,\"tst\":1508256136}",
-                "{\"_type\":\"location\",\"tid\":\"nx\",\"acc\":22,\"batt\":50,\"conn\":\"w\",\"lat\":59.434008,\"lon\":18.3240279,\"t\":\"u\",\"tst\":1508266487}",
                 "{\"_type\":\"location\",\"tid\":\"nx\",\"acc\":22,\"batt\":50,\"conn\":\"w\",\"lat\":59.4339265,\"lon\":18.3240272,\"tst\":1508266496}"
         );
 
@@ -107,7 +106,7 @@ public class MqttGenerator {
                     log.info("Connected");
                     while (true) {
 
-                        int i = ThreadLocalRandom.current().nextInt(0, 3);
+                        int i = ThreadLocalRandom.current().nextInt(0, list.size());
                         String content = list.get(i);
                         log.debug("Publishing message: " + content);
                         MqttMessage message = new MqttMessage(content.getBytes());
