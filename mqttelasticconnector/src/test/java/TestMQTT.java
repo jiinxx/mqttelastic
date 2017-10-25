@@ -1,5 +1,6 @@
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -22,6 +23,7 @@ import static org.apache.commons.codec.CharEncoding.UTF_8;
  * User: eurbmod
  * Date: 2017-10-17
  */
+@Ignore
 public class TestMQTT {
 
     @Test

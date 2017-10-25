@@ -1,3 +1,5 @@
+package se.urmo.mqttconnector;
+
 import org.apache.http.HttpHost;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -5,9 +7,6 @@ import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.elasticsearch.client.RestClient;
-import se.urmo.mqttconnector.ConnectionProcess;
-
-import java.io.IOException;
 
 /**
  * Copyright (c) Ericsson AB, 2016.

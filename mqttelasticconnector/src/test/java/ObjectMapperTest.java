@@ -1,7 +1,4 @@
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.ElasticLocation;
-import model.MQTTLocation;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -34,7 +31,7 @@ public class ObjectMapperTest {
 
     @Test
     public void test() throws IOException {
-        MQTTLocation l = new ObjectMapper().readValue(list.get(0), MQTTLocation.class);
-        ElasticLocation e = ElasticLocation.from(l);
+//        MQTTLocation l = new ObjectMapper().readValue(list.get(0), MQTTLocation.class);
+//        ElasticLocation e = ElasticLocation.from(l);
     }
 }

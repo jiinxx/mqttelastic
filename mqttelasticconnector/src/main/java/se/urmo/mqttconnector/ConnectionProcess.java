@@ -1,8 +1,8 @@
 package se.urmo.mqttconnector;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.ElasticLocation;
-import model.MQTTLocation;
+import se.urmo.mqttconnector.model.ElasticLocation;
+import se.urmo.mqttconnector.model.MQTTLocation;
 import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;

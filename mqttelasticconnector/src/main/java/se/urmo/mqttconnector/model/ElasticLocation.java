@@ -1,4 +1,4 @@
-package model;
+package se.urmo.mqttconnector.model;
 
 /**
  * Copyright (c) Ericsson AB, 2016.
@@ -16,19 +16,30 @@ package model;
  * User: eurbmod
  * Date: 2017-10-20
  */
-public class MQTTLocation {
+public class ElasticLocation{
     private BaseLocation baseLocation = new BaseLocation();
-    private String _type;
 
-    public MQTTLocation() {
+    public String getType() {
+        return type;
     }
 
-    public String get_type() {
-        return _type;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public void set_type(String _type) {
-        this._type = _type;
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    private String type;
+    private String uid;
+
+    public ElasticLocation(BaseLocation baseLocation) {
+        this.baseLocation = baseLocation;
     }
 
     public BaseLocation getBaseLocation() {
@@ -88,5 +99,9 @@ public class MQTTLocation {
     }
     public int getAcc(){
         return baseLocation.getAcc();
+    }
+
+    public static ElasticLocation from(MQTTLocation l) {
+        return new ElasticLocation(l.getBaseLocation());
     }
 }

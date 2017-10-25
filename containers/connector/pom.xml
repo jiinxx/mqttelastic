@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>se.urmo</groupId>
+        <artifactId>containers</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <groupId>se.urmo</groupId>
+    <artifactId>connector</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <docker.image>connect</docker.image>
+        <docker.project.version>1.0.0</docker.project.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>se.urmo</groupId>
+            <artifactId>mqttelasticconnector</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>${docker.image}</name>
+                            <alias>${docker.image}</alias>
+                            <build>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${docker.project.version}</tag>
+                                </tags>
+                                <dockerFileDir>.</dockerFileDir>
+                                <assembly>
+                                    <descriptorRef>artifact-with-dependencies</descriptorRef>
+                                </assembly>
+                            </build>
+                            <run>
+                                <namingStrategy>alias</namingStrategy>
+                                <hostname>${docker.image}</hostname>
+                                <env>
+                                    <SCHEMA_REGISTRY_HOST_NAME>xxx</SCHEMA_REGISTRY_HOST_NAME>
+                                </env>
+                                <links>
+                                    <link>mosquitto</link>
+                                    <link>elasticsearch</link>
+                                </links>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -5,6 +5,7 @@ import org.apache.http.nio.entity.NStringEntity;
 import org.apache.http.util.EntityUtils;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ import java.util.Map;
  * User: eurbmod
  * Date: 2017-10-17
  */
+@Ignore
 public class TestQuery {
 
     @Test

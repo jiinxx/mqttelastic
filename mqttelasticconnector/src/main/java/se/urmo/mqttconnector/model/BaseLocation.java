@@ -1,4 +1,4 @@
-package model;
+package se.urmo.mqttconnector.model;
 
 /**
  * Copyright (c) Ericsson AB, 2016.
