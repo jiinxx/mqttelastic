@@ -18,6 +18,7 @@
     <modules>
         <module>mosquitto</module>
         <module>elastic</module>
+        <module>kibana</module>
     </modules>
 
 </project>

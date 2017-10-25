@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>se.urmo</groupId>
+        <artifactId>containers</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>kibana</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <docker.image>kibana</docker.image>
+        <docker.project.version>1.0.0</docker.project.version>
+    </properties>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>${docker.image}</name>
+                            <alias>kibana</alias>
+                            <build>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${docker.project.version}</tag>
+                                </tags>
+                                <dockerFileDir>.</dockerFileDir>
+                            </build>
+                            <run>
+                                <namingStrategy>alias</namingStrategy>
+                                <hostname>kibana</hostname>
+                                <env>
+                                    <ELASTICSEARCH_URL>http://elasticsearch:9200</ELASTICSEARCH_URL>
+                                    <xpack.monitoring.ui.container.elasticsearch.enabled>false</xpack.monitoring.ui.container.elasticsearch.enabled>
+                                </env>
+                                <ports>
+                                    <port>5601:5601</port>
+                                </ports>
+                                <links>
+                                    <link>elasticsearch</link>
+                                </links>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
