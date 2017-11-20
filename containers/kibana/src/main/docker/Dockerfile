@@ -1,4 +1,4 @@
-FROM rta/centos71
+FROM jiinx/centos71
 EXPOSE 5601
 
 # Add Reporting dependencies.

@@ -1,4 +1,4 @@
-FROM rta/java8:latest
+FROM jiinx/java8:latest
 ENV ELASTIC_CONTAINER true
 ENV PATH /usr/share/elasticsearch/bin:$PATH
 

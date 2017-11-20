@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+#dub wait localhost 9300 20
+
+if [ $# -lt 1 ]
+then
+        echo "Usage : $0 <CMD> [options]"
+        exit
+fi
+
+CMD=$1
+
+case "$CMD" in
+	wait) echo "waiting";;
+	*) echo "dat aint no cmd.."
+		exit;;
+esac
+
+if [ $# -lt 2 ]
+then
+        echo "Usage : $0 Signalnumber PID"
+        exit
+fi
+#while getopts ":a:p:drh" opt; do
+#  case "$opt" in
+#    a) echo $OPTARG;;
+#  esac
+#done
