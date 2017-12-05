@@ -26,7 +26,7 @@
                 <configuration>
                     <images>
                         <image>
-                            <name>rta/elasticsearch</name>
+                            <name>urmo/elasticsearch</name>
                             <alias>elasticsearch</alias>
                             <build>
                                 <tags>

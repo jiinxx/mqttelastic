@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+#dub wait localhost 9300 20
+
+function check_availability(){
+	count=0
+	step=1
+
+	while [[ -z $(printf "GET / HTTP/1.0\r\n\r\n" | nc $1 $2 | grep -e '200 OK') ]]; do
+    		sleep $step;
+    		count=$(expr $count + $step)
+    		if [ $count -gt $3 ]; then
+        		return 0
+    		fi
+	done
+	return 1;
+}
+
+## Check cmd
+if [ $# -lt 1 ]
+then
+        echo "Usage : $0 <CMD> <args>"
+        exit
+fi
+
+CMD=$1
+
+case "$CMD" in
+	## Check availability
+	wait)
+		if [ $# != 4 ]
+		then
+			echo "Usage : $0 wait <HOST> <PORT> <TIMEOUT>"
+			exit; 
+		else
+			if check_availability $2 $3 $4; then
+    				echo "Not able to connect to $2:$3 (waited for $4 sec)"
+    				exit 1
+			fi
+		fi
+		;;
+
+	#Catch all
+	*) echo "dat aint no cmd.."
+	   exit;;
+esac
+
+#shift
+#while getopts ":a:p:drh" opt; do
+#  case "$opt" in
+#    a) echo $OPTARG;;
+#  esac
+#done
