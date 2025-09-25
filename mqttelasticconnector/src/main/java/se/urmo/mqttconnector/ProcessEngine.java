@@ -8,22 +8,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.elasticsearch.client.RestClient;
 
-/**
- * Copyright (c) Ericsson AB, 2016.
- * <p/>
- * All Rights Reserved. Reproduction in whole or in part is prohibited
- * without the written consent of the copyright owner.
- * <p/>
- * ERICSSON MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF
- * THE SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
- * TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- * PARTICULAR PURPOSE, OR NON-INFRINGEMENT. ERICSSON SHALL NOT BE LIABLE FOR
- * ANY DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR
- * DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
- * <p/>
- * User: eurbmod
- * Date: 2017-10-19
- */
+
 public class ProcessEngine {
     private static final Logger log = LogManager.getLogger(ProcessEngine.class);
     private static final String ELASTIC_HOST = "localhost";
